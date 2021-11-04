@@ -26,7 +26,11 @@ class GameBoard extends StatelessWidget {
               Expanded(
                 child: Container(
                   color: Colors.amber,
-                  child: Text(Provider.of<GameViewModel>(context).getAnswer() ?? 'not chosent yet'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset(
+                        'assets/images/${Provider.of<GameViewModel>(context).getAnswer() ?? 'unknown'}.png'),
+                  ),
                   alignment: Alignment.center,
                 ),
               ),
@@ -34,7 +38,11 @@ class GameBoard extends StatelessWidget {
               Expanded(
                 child: Container(
                   color: Colors.blue,
-                  child: Text(Provider.of<GameViewModel>(context).getChoice() ?? 'click to choose'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset(
+                        'assets/images/${Provider.of<GameViewModel>(context).getChoice() ?? 'unknown'}.png'),
+                  ),
                   alignment: Alignment.center,
                 ),
               ),
@@ -47,9 +55,12 @@ class GameBoard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ChoicePicker(Provider.of<GameViewModel>(context).getChoicesList()[0]),
-              ChoicePicker(Provider.of<GameViewModel>(context).getChoicesList()[1]),
-              ChoicePicker(Provider.of<GameViewModel>(context).getChoicesList()[2])
+              ChoicePicker(
+                  Provider.of<GameViewModel>(context).getChoicesList()[0]),
+              ChoicePicker(
+                  Provider.of<GameViewModel>(context).getChoicesList()[1]),
+              ChoicePicker(
+                  Provider.of<GameViewModel>(context).getChoicesList()[2])
             ],
           ),
         )
@@ -67,17 +78,18 @@ class ChoicePicker extends StatelessWidget {
     final gameViewModel = GameViewModel();
     return InkWell(
       onTap: () {
-        Provider.of<GameViewModel>(context, listen : false).setChoice(type);
-        Provider.of<GameViewModel>(context, listen : false).generateRandomAnswer();
+        Provider.of<GameViewModel>(context, listen: false).setChoice(type);
+        Provider.of<GameViewModel>(context, listen: false)
+            .generateRandomAnswer();
       },
       child: Container(
         width: 100,
         height: 100,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blueAccent,
+          color: Colors.blue,
         ),
-        child: Text(type),
+        child: Image.asset('assets/images/$type.png'),
         alignment: Alignment.center,
       ),
     );
