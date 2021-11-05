@@ -9,6 +9,15 @@ class GameViewModel with ChangeNotifier {
   List<String> getChoicesList() => gameModel.choicesList;
   String? getChoice() => gameModel.choice;
   String? getAnswer() => gameModel.answer;
+  int getGamesWon() => gameModel.gamesWon;
+  int getGamesLost() => gameModel.gamesLost;
+
+  play(String choice) {
+    setChoice(choice);
+    generateRandomAnswer();
+    gameModel.addGameToStats();
+    notifyListeners();
+  }
 
   setChoice(String type) {
     gameModel.choice = type;

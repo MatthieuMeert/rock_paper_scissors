@@ -26,10 +26,19 @@ class GameBoard extends StatelessWidget {
               Expanded(
                 child: Container(
                   color: Colors.amber,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset(
-                        'assets/images/${Provider.of<GameViewModel>(context).getAnswer() ?? 'unknown'}.png'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset(
+                            'assets/images/${Provider.of<GameViewModel>(context).getAnswer() ?? 'unknown'}.png'),
+                      ),
+                      Container(
+                        child: Text(
+                            '${Provider.of<GameViewModel>(context).getGamesLost()}'),
+                      )
+                    ],
                   ),
                   alignment: Alignment.center,
                 ),
@@ -38,10 +47,17 @@ class GameBoard extends StatelessWidget {
               Expanded(
                 child: Container(
                   color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset(
-                        'assets/images/${Provider.of<GameViewModel>(context).getChoice() ?? 'unknown'}.png'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset(
+                            'assets/images/${Provider.of<GameViewModel>(context).getChoice() ?? 'unknown'}.png'),
+                      ),
+                      Text(
+                          '${Provider.of<GameViewModel>(context).getGamesWon()}')
+                    ],
                   ),
                   alignment: Alignment.center,
                 ),
@@ -70,17 +86,14 @@ class GameBoard extends StatelessWidget {
 }
 
 class ChoicePicker extends StatelessWidget {
-  String type;
-  ChoicePicker(this.type, {Key? key}) : super(key: key);
+  String choice;
+  ChoicePicker(this.choice, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final gameViewModel = GameViewModel();
     return InkWell(
       onTap: () {
-        Provider.of<GameViewModel>(context, listen: false).setChoice(type);
-        Provider.of<GameViewModel>(context, listen: false)
-            .generateRandomAnswer();
+        Provider.of<GameViewModel>(context, listen: false).play(choice);
       },
       child: Container(
         width: 100,
@@ -89,7 +102,7 @@ class ChoicePicker extends StatelessWidget {
           shape: BoxShape.circle,
           color: Colors.blue,
         ),
-        child: Image.asset('assets/images/$type.png'),
+        child: Image.asset('assets/images/$choice.png'),
         alignment: Alignment.center,
       ),
     );
