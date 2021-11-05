@@ -36,7 +36,11 @@ class GameBoard extends StatelessWidget {
                       ),
                       Container(
                         child: Text(
-                            '${Provider.of<GameViewModel>(context).getGamesLost()}'),
+                          '${Provider.of<GameViewModel>(context).getGamesLost()}',
+                          style: DefaultTextStyle.of(context)
+                              .style
+                              .apply(fontSizeFactor: 2.0),
+                        ),
                       )
                     ],
                   ),
@@ -56,7 +60,11 @@ class GameBoard extends StatelessWidget {
                             'assets/images/${Provider.of<GameViewModel>(context).getChoice() ?? 'unknown'}.png'),
                       ),
                       Text(
-                          '${Provider.of<GameViewModel>(context).getGamesWon()}')
+                        '${Provider.of<GameViewModel>(context).getGamesWon()}',
+                        style: DefaultTextStyle.of(context)
+                            .style
+                            .apply(fontSizeFactor: 2.0),
+                      )
                     ],
                   ),
                   alignment: Alignment.center,
@@ -67,7 +75,7 @@ class GameBoard extends StatelessWidget {
           ),
         ),
         Container(
-          color: Colors.green,
+          color: Colors.grey,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -100,7 +108,7 @@ class ChoicePicker extends StatelessWidget {
         height: 100,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blue,
+          color: Colors.green,
         ),
         child: Image.asset('assets/images/$choice.png'),
         alignment: Alignment.center,
