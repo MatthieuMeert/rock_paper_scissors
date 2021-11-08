@@ -6,6 +6,8 @@ class GameModel {
   int gamesLost = 0;
   int gamesDraw = 0;
 
+  GameModel();
+
   addGameToStats() {
     if (choice == answer) {
       gamesDraw++;
