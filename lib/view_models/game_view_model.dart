@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:rps/models/game_model.dart';
 import 'package:rps/models/lizard_spok_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rps/models/rps_model.dart';
 
 class GameViewModel with ChangeNotifier {
-  var gameModel = LizardSpokModel();
+  GameModel gameModel = RPSModel();
 
   List<String> getChoicesList() => gameModel.choicesList;
   String? getChoice() => gameModel.choice;
@@ -19,14 +19,14 @@ class GameViewModel with ChangeNotifier {
   }
 
   void initialState() {
-    syncDataWithProvider();
+    gameModel.syncDataWithProvider();
   }
 
   play(String choice) {
     setChoice(choice);
     generateRandomAnswer();
     gameModel.addGameToStats();
-    updateSharedPrefrences();
+    gameModel.updateSharedPrefrences();
     notifyListeners();
   }
 
@@ -40,18 +40,16 @@ class GameViewModel with ChangeNotifier {
         gameModel.choicesList[Random().nextInt(gameModel.choicesList.length)];
   }
 
-  Future updateSharedPrefrences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('totalGamesWon', gameModel.gamesWon);
-    await prefs.setInt('totalGamesLost', gameModel.gamesLost);
-    await prefs.setInt('totalGamesDraw', gameModel.gamesDraw);
+  changeGameModel() {
+    gameModel is RPSModel
+        ? gameModel = LizardSpokModel()
+        : gameModel = RPSModel();
+    gameModel.syncDataWithProvider();
+    notifyListeners();
   }
 
-  Future syncDataWithProvider() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    gameModel.gamesWon = prefs.getInt('totalGamesWon') ?? 0;
-    gameModel.gamesLost = prefs.getInt('totalGamesLost') ?? 0;
-    gameModel.gamesDraw = prefs.getInt('totalGamesDraw') ?? 0;
+  void reset() {
+    gameModel.reset();
     notifyListeners();
   }
 }

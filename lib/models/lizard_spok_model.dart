@@ -1,13 +1,11 @@
-class LizardSpokModel {
-  List<String> choicesList = ['scissors', 'paper', 'rock', 'lizard', 'spok'];
-  String? choice;
-  String? answer;
-  int gamesWon = 0;
-  int gamesLost = 0;
-  int gamesDraw = 0;
+import 'package:rps/models/game_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-  LizardSpokModel();
+class LizardSpokModel extends GameModel{
+  @override
+  List<String> choicesList = ['rock', 'paper', 'scissors', 'lizard', 'spok'];
 
+  @override
   addGameToStats() {
     if (choice == answer) {
       gamesDraw++;
@@ -24,5 +22,21 @@ class LizardSpokModel {
         choice == 'spok' && (answer == 'paper' || answer == 'lizard')) {
       gamesLost++;
     }
+  }
+
+  @override
+  Future updateSharedPrefrences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('LizardSpokTotalGamesWon', gamesWon);
+    await prefs.setInt('LizardSpokTotalGamesLost', gamesLost);
+    await prefs.setInt('LizardSpokTotalGamesDraw', gamesDraw);
+  }
+
+  @override
+  Future syncDataWithProvider() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    gamesWon = prefs.getInt('LizardSpokTotalGamesWon') ?? 0;
+    gamesLost = prefs.getInt('LizardSpokTotalGamesLost') ?? 0;
+    gamesDraw = prefs.getInt('LizardSpokTotalGamesDraw') ?? 0;
   }
 }

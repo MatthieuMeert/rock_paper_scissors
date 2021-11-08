@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rps/models/rps_model.dart';
 import 'package:rps/view_models/game_view_model.dart';
+
+import '../r_p_s_icons_icons.dart';
 
 class GameView extends StatelessWidget {
   const GameView({Key? key}) : super(key: key);
@@ -8,7 +11,28 @@ class GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Rock, paper, scissors.')),
+      appBar: AppBar(
+        title: Text(Provider.of<GameViewModel>(context).gameModel is RPSModel
+            ? 'Rock,paper,scissors'
+            : '..., lizard, Spok.'),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.group)),
+          IconButton(
+              onPressed: () {
+                Provider.of<GameViewModel>(context, listen: false)
+                    .changeGameModel();
+              },
+              icon: Icon(
+                  Provider.of<GameViewModel>(context).gameModel is RPSModel
+                      ? RPSIcons.spok
+                      : RPSIcons.rock)),
+          IconButton(
+              onPressed: () {
+                Provider.of<GameViewModel>(context, listen: false).reset();
+              },
+              icon: const Icon(Icons.settings_backup_restore)),
+        ],
+      ),
       body: GameBoard(),
     );
   }
@@ -78,15 +102,10 @@ class GameBoard extends StatelessWidget {
           color: Colors.grey,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: Provider.of<GameViewModel>(context).getChoicesList().map((choice) => ChoicePicker(choice)).toList(),
-            // children: [
-            //   ChoicePicker(
-            //       Provider.of<GameViewModel>(context).getChoicesList()[0]),
-            //   ChoicePicker(
-            //       Provider.of<GameViewModel>(context).getChoicesList()[1]),
-            //   ChoicePicker(
-            //       Provider.of<GameViewModel>(context).getChoicesList()[2])
-            // ],
+            children: Provider.of<GameViewModel>(context)
+                .getChoicesList()
+                .map((choice) => ChoicePicker(choice))
+                .toList(),
           ),
         )
       ],

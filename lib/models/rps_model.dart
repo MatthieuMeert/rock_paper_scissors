@@ -1,13 +1,11 @@
-class RPSModel {
+import 'package:rps/models/game_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class RPSModel extends GameModel {
+  @override
   List<String> choicesList = ['rock', 'paper', 'scissors'];
-  String? choice;
-  String? answer;
-  int gamesWon = 0;
-  int gamesLost = 0;
-  int gamesDraw = 0;
 
-  RPSModel();
-
+  @override
   addGameToStats() {
     if (choice == answer) {
       gamesDraw++;
@@ -20,5 +18,21 @@ class RPSModel {
         choice == 'scissors' && answer == 'rock') {
       gamesLost++;
     }
+  }
+
+  @override
+  Future updateSharedPrefrences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('RPStotalGamesWon', gamesWon);
+    await prefs.setInt('RPStotalGamesLost', gamesLost);
+    await prefs.setInt('RPStotalGamesDraw', gamesDraw);
+  }
+
+  @override
+  Future syncDataWithProvider() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    gamesWon = prefs.getInt('RPStotalGamesWon') ?? 0;
+    gamesLost = prefs.getInt('RPStotalGamesLost') ?? 0;
+    gamesDraw = prefs.getInt('RPStotalGamesDraw') ?? 0;
   }
 }
