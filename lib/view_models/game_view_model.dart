@@ -1,11 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:rps/models/lizard_spok_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:rps/models/game_model.dart';
+import 'package:rps/models/rps_model.dart';
 
 class GameViewModel with ChangeNotifier {
-  var gameModel = GameModel();
+  var gameModel = LizardSpokModel();
 
   List<String> getChoicesList() => gameModel.choicesList;
   String? getChoice() => gameModel.choice;

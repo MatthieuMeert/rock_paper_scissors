@@ -8,7 +8,7 @@ class GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Rock, paper, scisors.')),
+      appBar: AppBar(title: const Text('Rock, paper, scissors.')),
       body: GameBoard(),
     );
   }
@@ -78,14 +78,15 @@ class GameBoard extends StatelessWidget {
           color: Colors.grey,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ChoicePicker(
-                  Provider.of<GameViewModel>(context).getChoicesList()[0]),
-              ChoicePicker(
-                  Provider.of<GameViewModel>(context).getChoicesList()[1]),
-              ChoicePicker(
-                  Provider.of<GameViewModel>(context).getChoicesList()[2])
-            ],
+            children: Provider.of<GameViewModel>(context).getChoicesList().map((choice) => ChoicePicker(choice)).toList(),
+            // children: [
+            //   ChoicePicker(
+            //       Provider.of<GameViewModel>(context).getChoicesList()[0]),
+            //   ChoicePicker(
+            //       Provider.of<GameViewModel>(context).getChoicesList()[1]),
+            //   ChoicePicker(
+            //       Provider.of<GameViewModel>(context).getChoicesList()[2])
+            // ],
           ),
         )
       ],
@@ -99,19 +100,22 @@ class ChoicePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Provider.of<GameViewModel>(context, listen: false).play(choice);
-      },
-      child: Container(
-        width: 100,
-        height: 100,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.green,
+    return Flexible(
+      child: InkWell(
+        onTap: () {
+          Provider.of<GameViewModel>(context, listen: false).play(choice);
+        },
+        child: Padding(
+          padding: EdgeInsets.all(2),
+          child: Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.green,
+            ),
+            child: Image.asset('assets/images/$choice.png'),
+            alignment: Alignment.center,
+          ),
         ),
-        child: Image.asset('assets/images/$choice.png'),
-        alignment: Alignment.center,
       ),
     );
   }
