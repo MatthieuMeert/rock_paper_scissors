@@ -33,13 +33,13 @@ class GameView extends StatelessWidget {
               icon: const Icon(Icons.settings_backup_restore)),
         ],
       ),
-      body: GameBoard(),
+      body: const GameBoard(),
     );
   }
 }
 
 class GameBoard extends StatelessWidget {
-  GameBoard({Key? key}) : super(key: key);
+  const GameBoard({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,53 +47,15 @@ class GameBoard extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              Expanded(
-                child: Container(
-                  color: Colors.amber,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset(
-                            'assets/images/${Provider.of<GameViewModel>(context).getAnswer() ?? 'unknown'}.png'),
-                      ),
-                      Container(
-                        child: Text(
-                          '${Provider.of<GameViewModel>(context).getGamesLost()}',
-                          style: DefaultTextStyle.of(context)
-                              .style
-                              .apply(fontSizeFactor: 2.0),
-                        ),
-                      )
-                    ],
-                  ),
-                  alignment: Alignment.center,
-                ),
-              ),
+              PlayerBoard(
+                  Provider.of<GameViewModel>(context).getAnswer() ?? 'unknown',
+                  Provider.of<GameViewModel>(context).getGamesLost(),
+                  Colors.amber),
               const Divider(),
-              Expanded(
-                child: Container(
-                  color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset(
-                            'assets/images/${Provider.of<GameViewModel>(context).getChoice() ?? 'unknown'}.png'),
-                      ),
-                      Text(
-                        '${Provider.of<GameViewModel>(context).getGamesWon()}',
-                        style: DefaultTextStyle.of(context)
-                            .style
-                            .apply(fontSizeFactor: 2.0),
-                      )
-                    ],
-                  ),
-                  alignment: Alignment.center,
-                ),
-              ),
+              PlayerBoard(
+                  Provider.of<GameViewModel>(context).getChoice() ?? 'unknown',
+                  Provider.of<GameViewModel>(context).getGamesWon(),
+                  Colors.blue),
               const Divider(),
             ],
           ),
@@ -113,9 +75,41 @@ class GameBoard extends StatelessWidget {
   }
 }
 
-class ChoicePicker extends StatelessWidget {
+class PlayerBoard extends StatelessWidget {
   String choice;
-  ChoicePicker(this.choice, {Key? key}) : super(key: key);
+  int score;
+  Color color;
+  PlayerBoard(this.choice, this.score, this.color, {Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        color: color,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Image.asset('assets/images/$choice.png'),
+            ),
+            Text(
+              '$score',
+              style:
+                  DefaultTextStyle.of(context).style.apply(fontSizeFactor: 2.0),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+      ),
+    );
+  }
+}
+
+class ChoicePicker extends StatelessWidget {
+  final String choice;
+  const ChoicePicker(this.choice, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +119,7 @@ class ChoicePicker extends StatelessWidget {
           Provider.of<GameViewModel>(context, listen: false).play(choice);
         },
         child: Padding(
-          padding: EdgeInsets.all(2),
+          padding: const EdgeInsets.all(2),
           child: Container(
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
