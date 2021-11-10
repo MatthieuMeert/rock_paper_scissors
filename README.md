@@ -1,6 +1,6 @@
 # Rock_paper_scissors
 
-Rock, paper, scisors !
+Rock, paper, scissors !
 
 ## Project description
 
