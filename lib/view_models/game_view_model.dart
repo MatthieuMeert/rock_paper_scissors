@@ -22,6 +22,10 @@ class GameViewModel with ChangeNotifier {
     gameModel.syncDataWithProvider();
   }
 
+  String getDescription(String choice) {
+    return gameModel.getDescription(choice);
+  }
+
   play(String choice) {
     setChoice(choice);
     generateRandomAnswer();

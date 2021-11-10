@@ -6,6 +6,10 @@ abstract class GameModel {
   int gamesLost = 0;
   int gamesDraw = 0;
 
+  String getDescription(String choice) {
+    return 'Description missing.';
+  }
+
   addGameToStats();
 
   syncDataWithProvider();

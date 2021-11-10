@@ -114,19 +114,23 @@ class ChoicePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: InkWell(
-        onTap: () {
-          Provider.of<GameViewModel>(context, listen: false).play(choice);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.green,
+      child: Tooltip(
+        message: Provider.of<GameViewModel>(context, listen: false)
+            .getDescription(choice),
+        child: InkWell(
+          onTap: () {
+            Provider.of<GameViewModel>(context, listen: false).play(choice);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.green,
+              ),
+              child: Image.asset('assets/images/$choice.png'),
+              alignment: Alignment.center,
             ),
-            child: Image.asset('assets/images/$choice.png'),
-            alignment: Alignment.center,
           ),
         ),
       ),
